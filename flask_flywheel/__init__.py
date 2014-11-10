@@ -17,12 +17,10 @@ class Engine(_Engine):
 class Flywheel(object):
     def __init__(self, app=None):
         self._engine = None
+        self.app = app
 
         if app is not None:
-            self.app = app
             self.init_app(app)
-        else:
-            self.app = None
 
     def init_app(self, app):
         app.config.setdefault("FLYWHEEL_DATABASE_HOST", None)
@@ -38,12 +36,10 @@ class Flywheel(object):
 
     @property
     def engine(self):
-        if self.app is None:
-            raise AttributeError(
-                "The flywheel extension was not registered "
-                "to the current application. Please make sure "
-                "to call init_app() first."
-                )
+        assert self.app is not None, \
+            "The flywheel extension was not registered " \
+            "to the current application. Please make sure " \
+            "to call init_app() first."
 
         if self._engine is None:
             self._engine = Engine()
