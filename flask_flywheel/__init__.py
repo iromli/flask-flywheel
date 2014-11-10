@@ -26,7 +26,7 @@ class Flywheel(object):
         app.config.setdefault("FLYWHEEL_DATABASE_HOST", None)
         app.config.setdefault("FLYWHEEL_DATABASE_PORT", None)
         app.config.setdefault("FLYWHEEL_REGION", "us-east-1")
-        app.config.setdefault("FLYWHEEL_IS_SECURE", True)
+        app.config.setdefault("FLYWHEEL_SECURE", True)
         app.config.setdefault("AWS_ACCESS_KEY", None)
         app.config.setdefault("AWS_SECRET_ACCESS_KEY", None)
 
@@ -49,6 +49,6 @@ class Flywheel(object):
                 secret_key=self.app.config["AWS_SECRET_ACCESS_KEY"],
                 host=self.app.config["FLYWHEEL_DATABASE_HOST"],
                 port=self.app.config["FLYWHEEL_DATABASE_PORT"],
-                is_secure=self.app.config["FLYWHEEL_IS_SECURE"],
+                is_secure=self.app.config["FLYWHEEL_SECURE"],
                 )
         return self._engine
