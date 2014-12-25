@@ -4,12 +4,20 @@ Flask-Flywheel
 
 Adds Flywheel support to your Flask application.
 """
+import re
 from setuptools import setup
+
+
+# Get version without importing, which avoids dependency issues
+def get_version():
+    with open("flask_flywheel/_meta.py") as f:
+        return re.search(r"""__version__\s+=\s+(['"])(?P<version>.+?)\1""",
+                         f.read()).group('version')
 
 
 setup(
     name="flask-flywheel",
-    version="0.1.0-dev",
+    version=get_version(),
     url="http://github.com/iromli/flask-flywheel",
     license="MIT",
     author="Isman Firmansyah",

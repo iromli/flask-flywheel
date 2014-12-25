@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
-from __future__ import (
-    absolute_import,
-    division,
-    print_function,
-    unicode_literals,
-)
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
 
 from dynamo3.connection import DynamoDBConnection
 from flywheel import Engine as _Engine
+
+from _meta import __version__  # noqa
 
 
 class Engine(_Engine):
