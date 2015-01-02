@@ -4,10 +4,10 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+__version__ = "0.1.0-dev"
+
 from dynamo3.connection import DynamoDBConnection
 from flywheel import Engine as _Engine
-
-from _meta import __version__  # noqa
 
 
 class Engine(_Engine):
