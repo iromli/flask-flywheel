@@ -9,7 +9,7 @@ import uuid
 from datetime import datetime
 
 from flask import Flask, request, flash, url_for, redirect, render_template
-from flask.ext.flywheel import Flywheel
+from flask_flywheel import Flywheel
 from flywheel import Model, Field
 
 
