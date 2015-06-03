@@ -8,6 +8,7 @@ __version__ = "0.1.0-dev"
 
 from dynamo3.connection import DynamoDBConnection
 from flywheel import Engine as _Engine
+from flask import _app_ctx_stack
 
 
 class Engine(_Engine):
@@ -107,7 +108,6 @@ class Flywheel(object):
 
         app.extensions = getattr(app, "extensions", {})
         app.extensions["flywheel"] = self
-        self.app = app
 
     @property
     def engine(self):
@@ -115,19 +115,28 @@ class Flywheel(object):
         noting that accessing this property without having a proper
         initialization step will raise an error.
         """
-        assert self.app is not None, \
-            "The flywheel extension was not registered " \
-            "to the current application. Please make sure " \
-            "to call init_app() first."
-
         if self._engine is None:
+            app = self._get_app()
+
             self._engine = Engine()
             self._engine.connect(
-                self.app.config["FLYWHEEL_REGION"],
-                access_key=self.app.config["AWS_ACCESS_KEY"],
-                secret_key=self.app.config["AWS_SECRET_ACCESS_KEY"],
-                host=self.app.config["FLYWHEEL_DATABASE_HOST"],
-                port=self.app.config["FLYWHEEL_DATABASE_PORT"],
-                is_secure=self.app.config["FLYWHEEL_SECURE"],
+                app.config["FLYWHEEL_REGION"],
+                access_key=app.config["AWS_ACCESS_KEY"],
+                secret_key=app.config["AWS_SECRET_ACCESS_KEY"],
+                host=app.config["FLYWHEEL_DATABASE_HOST"],
+                port=app.config["FLYWHEEL_DATABASE_PORT"],
+                is_secure=app.config["FLYWHEEL_SECURE"],
                 )
         return self._engine
+
+    def _get_app(self):
+        if self.app:
+            return self.app
+
+        ctx = _app_ctx_stack.top
+        if ctx:
+            return ctx.app
+
+        raise RuntimeError("application not registered on flywheel "
+                           "instance and no application bound "
+                           "to current context")

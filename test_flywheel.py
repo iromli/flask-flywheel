@@ -45,6 +45,6 @@ def test_engine(app, flywheel):
 
 
 def test_uninitialized_engine(unitialized_flywheel):
-    with pytest.raises(AssertionError) as exc:
+    with pytest.raises(RuntimeError) as exc:
         unitialized_flywheel.engine.create_schema()
-    assert "init_app()" in str(exc.value)
+        assert "context" in str(exc.value)
