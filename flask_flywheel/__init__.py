@@ -99,6 +99,9 @@ class Flywheel(object):
         """This callback can be used to initialize an application for the
         use with this database setup.
         """
+        if self.app is None:
+            self.app = app
+
         app.config.setdefault("FLYWHEEL_DATABASE_HOST", None)
         app.config.setdefault("FLYWHEEL_DATABASE_PORT", None)
         app.config.setdefault("FLYWHEEL_REGION", "us-east-1")
