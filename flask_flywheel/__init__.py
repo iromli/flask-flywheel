@@ -44,6 +44,16 @@ class Flywheel(object):
         Determine whether the connection must use secure protocol (HTTPS).
         Default to ``True``.
 
+    FLYWHEEL_ENGINE_NAMESPACE:
+        String prefix or list of component parts of a prefix for models. All
+        table names will be prefixed by this string or strings (joined by '-').
+        Default to ``None``.
+
+    FLYWHEEL_ENGINE_DEFAULT_CONFLICT:
+        Can be on of: 'update', 'overwrite', 'raise' which sets the default setting for delete(), save(), and sync()
+        See `flywheel documentation <http://flywheel.readthedocs.io/en/latest/ref/flywheel.engine.html#module-flywheel.engine>`_
+        Default to ``update``.
+
     AWS_ACCESS_KEY:
         AWS access key. Default to ``None``.
 
@@ -106,6 +116,8 @@ class Flywheel(object):
         app.config.setdefault("FLYWHEEL_DATABASE_PORT", None)
         app.config.setdefault("FLYWHEEL_REGION", "us-east-1")
         app.config.setdefault("FLYWHEEL_SECURE", True)
+        app.config.setdefault("FLYWHEEL_ENGINE_NAMESPACE", ())
+        app.config.setdefault("FLYWHEEL_ENGINE_DEFAULT_CONFLICT", "update")
         app.config.setdefault("AWS_ACCESS_KEY", None)
         app.config.setdefault("AWS_SECRET_ACCESS_KEY", None)
 
@@ -121,7 +133,11 @@ class Flywheel(object):
         if self._engine is None:
             app = self._get_app()
 
-            self._engine = Engine()
+            self._engine = Engine(
+                namespace=app.config["FLYWHEEL_ENGINE_NAMESPACE"],
+                default_conflict=app.config["FLYWHEEL_ENGINE_DEFAULT_CONFLICT"]
+            )
+
             self._engine.connect(
                 app.config["FLYWHEEL_REGION"],
                 access_key=app.config["AWS_ACCESS_KEY"],
