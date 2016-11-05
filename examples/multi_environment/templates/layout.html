@@ -1,0 +1,9 @@
+<!doctype html>
+<title>Flywheel Todo</title>
+<h1>Flywheel Todo</h1>
+{%- for category, message in get_flashed_messages(with_categories=true) %}
+    <p class="flask {{ category }}-flash">{{ "Error: " if category == 'error' }}{{ message }}</p>
+{%- endfor %}
+{% block body %}{% endblock %}
+<hr>
+<address>Flywheel and Flask powered todo application</address>

@@ -33,7 +33,7 @@ setup(
     packages=["flask_flywheel"],
     zip_safe=False,
     install_requires=[
-        "flywheel",
+        "flywheel", 'flask',
     ],
     classifiers=[
         "Environment :: Web Environment",
